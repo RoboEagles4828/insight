@@ -1,0 +1,88 @@
+<html>
+	<head>
+		<title>Test</title>
+		<link href="/css/bootstrap.min.css" rel="stylesheet" />
+		<link href="/css/flat-ui.min.css" rel="stylesheet" />
+		<link href="/css/custom.css" rel="stylesheet" />
+		<script src="/socket.io/socket.io.js"></script>
+		<script>
+		  var socket = io('http://localhost:3000');
+		  team = '4828'
+		  socket.on('connect', function(){});
+		  socket.on('next', function(data){
+		  	console.log(data);
+		  	document.getElementById('match-string').innerHTML = 'Match #' + data[0].number;
+		  	document.getElementById('time-string').innerHTML = data[0].time;
+
+		  	if (data[0].red[0] == team) {
+		  		document.getElementById('red-top').innerHTML = '<div class="us">' + data[0].red[0] + '</div>';
+		  	}
+		  	else {
+		  		document.getElementById('red-top').innerHTML = data[0].red[0].toString();
+		  	}
+
+		  	if (data[0].red[1] == team) {
+		  		document.getElementById('red-mid').innerHTML = '<div class="us">' + data[0].red[1] + '</div>';
+		  	}
+		  	else {
+		  		document.getElementById('red-mid').innerHTML = data[0].red[1].toString();
+		  	}
+
+		  	if (data[0].red[2] == team) {
+		  		document.getElementById('red-bot').innerHTML = '<div class="us">' + data[0].red[2] + '</div>';
+		  	}
+		  	else {
+		  		document.getElementById('red-bot').innerHTML = data[0].red[2].toString();
+		  	}
+
+		  	if (data[0].blue[0] == team) {
+		  		document.getElementById('blue-top').innerHTML = '<div class="us">' + data[0].blue[0] + '</div>';
+		  	}
+		  	else {
+		  		document.getElementById('blue-top').innerHTML = data[0].blue[0].toString();
+		  	}
+
+		  	if (data[0].blue[1] == team) {
+		  		document.getElementById('blue-mid').innerHTML = '<div class="us">' + data[0].blue[1] + '</div>';
+		  	}
+		  	else {
+		  		document.getElementById('blue-mid').innerHTML = data[0].blue[1].toString();
+		  	}
+
+		  	if (data[0].blue[2] == team) {
+		  		document.getElementById('blue-bot').innerHTML = '<div class="us">' + data[0].blue[2] + '</div>';
+		  	}
+		  	else {
+		  		document.getElementById('blue-bot').innerHTML = data[0].blue[2].toString();
+		  	}
+		  	
+		  	
+		  });
+		  socket.on('event', function(data){});
+		  socket.on('disconnect', function(){});
+		</script>
+		<script>setTimeout(function(){window.location.href='upcoming.html'},10000);</script>
+	</head>
+	<body>
+		<div class="container">
+			<h2 align="center">Next Match</h2>
+			<h5 align="center" id="match-string"></h5>
+			<h5 align="center" id="time-string"></h5>
+			<div class="row">
+				<div class="col-md-5 alert alliance-red" id="red-top"></div>
+				<div class="col-md-2"></div>
+				<div class="col-md-5 alert alliance-blue" id="blue-top"></div>
+			</div>
+			<div class="row">
+				<div class="col-md-5 alert alliance-red" id="red-mid"></div>
+				<div class="col-md-2"></div>
+				<div class="col-md-5 alert alliance-blue" id="blue-mid"></div>
+			</div>
+			<div class="row">
+				<div class="col-md-5 alert alliance-red" id="red-bot"></div>
+				<div class="col-md-2"></div>
+				<div class="col-md-5 alert alliance-blue" id="blue-bot"></div>
+			</div>
+		</div>
+	</body>
+</html>

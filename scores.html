@@ -1,0 +1,85 @@
+<html>
+	<head>
+		<title>Upcoming</title>
+		<link href="/css/bootstrap.min.css" rel="stylesheet" />
+		<link href="/css/flat-ui.min.css" rel="stylesheet" />
+		<link href="/css/custom.css" rel="stylesheet" />
+		<script src="/socket.io/socket.io.js"></script>
+		<script>
+		  var socket = io('http://localhost:3001');
+		  team = '4828';
+		  socket.on('connect', function(){});
+		  socket.on('scores', function(data){
+		  	console.log(data);
+		  	document.getElementById('oprs').innerHTML = '';
+		  	var limit;
+		  	if (data.length < 5) {
+		  		limit = data.length;
+		  	} else {
+		  		limit = 5;
+		  	}
+		  	var areWeWinning = false;
+		  	for (var i = 0; i < limit; i++) {
+		  		if (data.oprs[i][0] == team) {
+		  			areWeWinning = true;
+		  		}
+		  		var teamSearch = data.oprs[i][0];
+		  		var opr = parseFloat(data.oprs[i][1]).toFixed(3);
+		  		var dpr;
+		  		for (var j = 0; j < data.dprs.length; j++) {
+		  			if (data.dprs[j][0] == teamSearch) {
+		  				dpr = parseFloat(data.dprs[j][1]).toFixed(3);
+		  			}
+		  		}
+		  		var ccwm;
+		  		for (var j = 0; j < data.ccwms.length; j++) {
+		  			if (data.ccwms[j][0] == teamSearch) {
+		  				ccwm = parseFloat(data.ccwms[j][1]).toFixed(3);
+		  			}
+		  		}
+		  		document.getElementById('oprs').innerHTML = document.getElementById('oprs').innerHTML + '<div class="alert alert-box"><div class="row"><div class="col-sm-2 rank">' + (i + 1) + '</div><div class="col-sm-2 numeral">' + data.oprs[i][0] + '</div><div class="col-sm-2 numeral">' + opr + '</div><div class="col-sm-2 numeral">' + dpr + '</div><div class="col-sm-2 numeral">' + ccwm + '</div></div></div>';
+		  	}
+		  	if (! areWeWinning) {
+		  		for (var i = 0; i < data.oprs.length; i++) {
+		  			if (data.oprs[i][0] == team) {
+		  				rank = i + 1;
+		  				var teamSearch = data.oprs[i][0];
+				  		var opr = parseFloat(data.oprs[i][1]).toFixed(3);
+				  		var dpr;
+				  		for (var j = 0; j < data.dprs.length; j++) {
+				  			if (data.dprs[j][0] == teamSearch) {
+				  				dpr = parseFloat(data.dprs[j][1]).toFixed(3);
+				  			}
+				  		}
+				  		var ccwm;
+				  		for (var j = 0; j < data.ccwms.length; j++) {
+				  			if (data.ccwms[j][0] == teamSearch) {
+				  				ccwm = parseFloat(data.ccwms[j][1]).toFixed(3);
+				  			}
+				  		}
+				  		document.getElementById('oprs').innerHTML = document.getElementById('oprs').innerHTML + '<hr /><div class="alert alert-box"><div class="row"><div class="col-sm-2 rank">' + (i + 1) + '</div><div class="col-sm-2 numeral">' + data.oprs[i][0] + '</div><div class="col-sm-2 numeral">' + opr + '</div><div class="col-sm-2 numeral">' + dpr + '</div><div class="col-sm-2 numeral">' + ccwm + '</div></div></div>';
+		  			}
+		  		}
+		  	}
+		  });
+		  socket.on('event', function(data){});
+		  socket.on('disconnect', function(){});
+		</script>
+		<script>setTimeout(function(){window.location.href='next.html'},10000);</script>
+	</head>
+	<body>
+		<h5 align="center">Current Rankings</h5>
+		<div class="container">
+			<div class="row">
+				<div class="row">
+					<div class="col-sm-2">Rank</div>
+					<div class="col-sm-2">Team</div>
+					<div class="col-sm-2">OPR</div>
+					<div class="col-sm-2">DPR</div>
+					<div class="col-sm-2">CCWM</div>
+				</div>
+				<div id="oprs"></div>
+			</div>
+		</div>
+	</body>
+</html>
