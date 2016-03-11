@@ -11,10 +11,10 @@
     "express": "~4.13.4",
     "mocha": "~2.4.5",
     "moment": "^2.12.0",
-    "morgan": "^1.7.0",
     "pretty-error": "~2.0.0",
     "request": "~2.69.0",
-    "socket.io": "~1.4.5"
+    "socket.io": "~1.4.5",
+    "stipes": "^1.1.2"
   },
   "devDependencies": {},
   "scripts": {
@@ -22,5 +22,6 @@
     "start": "node index.js"
   },
   "author": "Caleb Xu",
-  "license": "ISC"
+  "license": "ISC",
+  "private": true
 }

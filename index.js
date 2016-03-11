@@ -1,22 +1,24 @@
-var express     = require('express');
-var fs          = require('fs');
-var http        = require('http');
-var morgan      = require('morgan');
-var moment      = require('moment');
-var path        = require('path');
-var request     = require('request');
+var express = require('express');
+var fs      = require('fs');
+var http    = require('http');
+var moment  = require('moment');
+var path    = require('path');
+var request = require('request');
+var stipes  = require('stipes');
 require('pretty-error').start();
+stipes.success('init', 'logging library loaded');
 
 var app = express();
 var server = app.listen(3000);
 var scores = app.listen(3001);
 var io = require('socket.io').listen(server);
+stipes.success('init', 'bound successfully to port 3000');
 var io2 = require('socket.io').listen(scores);
+stipes.success('init', 'bound successfully to port 3001');
 team = '4828';
+stipes.debug('insight', 'running on behalf of team ' + team);
 
 app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
-app.use(morgan('combined'));
 app.use(express.static('fonts'));
 
 var server = http.createServer(app);
@@ -67,7 +69,7 @@ io.on('connection', function (socket) {
 	upcoming = [];
 	for (var i = 0; i < obj.length; i++) {
 		var match = obj[i];
-		if (match.time * 1000 >= Date.now()) {
+		if (match.time * 1000 >= 1) {
 			teamColor = '';
 			if (match.alliances.red.teams.indexOf('frc' + team) > -1) {
 				teamColor = 'red';
@@ -92,24 +94,26 @@ io.on('connection', function (socket) {
 io2.on('connection', function (socket) {
 	var result = {};
 	var options = {
-	    url: 'https://www.thebluealliance.com/api/v2/event/2016ncmcl/stats',
+	    url: 'https://www.thebluealliance.com/api/v2/event/2015ncre/stats',
 	    headers: {'X-TBA-App-ID': 'frc4828:insight:v1.0.0'}
 	};
 
 	function callback(error, response, body) {
-	    result = JSON.parse(body);
-	    var oprs = sortProperties(result.oprs).reverse();
-	    var dprs = sortProperties(result.dprs).reverse();
-	    var ccwms = sortProperties(result.ccwms).reverse();
-
-	    socket.emit("scores",
-	    	{
-	    		"oprs": oprs,
-	    		"dprs": dprs,
-	    		"ccwms": ccwms
-	    	}
-	    );
+		try {
+	    	result = JSON.parse(body);
+		    var oprs = sortProperties(result.oprs).reverse();
+		    var dprs = sortProperties(result.dprs).reverse();
+		    var ccwms = sortProperties(result.ccwms).reverse();
+		    socket.emit("scores",
+		    	{
+		    		"oprs": oprs,
+		    		"dprs": dprs,
+		    		"ccwms": ccwms
+		    	}
+	    	);
+		} catch (e) {
+			stipes.error('insight', "failed to update score");
+		}
 	}
-
 	request(options, callback);
 });
