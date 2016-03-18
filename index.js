@@ -83,7 +83,8 @@ io.on('connection', function (socket) {
 					time: moment(match.time *1000).format('MM/DD/YYYY hh:mm a').toString(),
 					red: [match.alliances.red.teams[0].substring(3), match.alliances.red.teams[1].substring(3), match.alliances.red.teams[2].substring(3)],
 					blue: [match.alliances.blue.teams[0].substring(3), match.alliances.blue.teams[1].substring(3), match.alliances.blue.teams[2].substring(3)],
-					color: teamColor
+					color: teamColor,
+					score_breakdown: match.score_breakdown
 				}
 			);
 		}
