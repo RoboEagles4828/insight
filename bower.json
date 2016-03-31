@@ -1,0 +1,21 @@
+{
+  "name": "insight",
+  "description": "FRC statistics and match information",
+  "main": "index.js",
+  "authors": [
+    "Caleb Xu"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/RoboEagles4828/insight",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "flat-ui": "^2.2.2"
+  }
+}
