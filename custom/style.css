@@ -8,7 +8,7 @@
 	background-color: #e74c3c;
     border-color: #c0392b;
     text-align: center;
-    font-size: 300%;
+    font-size: 200%;
 }
 
 .alliance-blue {
@@ -16,7 +16,7 @@
 	background-color: #3498db;
     border-color: #2980b9;
     text-align: center;
-    font-size: 300%;
+    font-size: 200%;
 }
 
 .date {
@@ -45,6 +45,22 @@
     color: #fff;
     background-color: #3498db;
     border-color: #2980b9;
+    text-align: center;
+    padding: 0px;
+}
+
+.score-red {
+    color: #fff;
+    background-color: #c0392b;
+    border-color: #e74c3c;
+    text-align: center;
+    padding: 0px;
+}
+
+.score-blue {
+    color: #fff;
+    background-color: #2980b9;
+    border-color: #3498db;
     text-align: center;
     padding: 0px;
 }

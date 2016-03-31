@@ -11,25 +11,33 @@
 		  socket.on('connect', function(){});
 		  socket.on('next', function(data){
 		  	console.log(data);
-		  	document.getElementById('matches').innerHTML = '';
-		  	counter = 0;
-		  	for (var i = 1; i < data.length; i++) {
-		  		if (counter < 5) {
+		  	var i = 0;
+		  	setInterval(function(){
+		  		var counter = 0;
+		  		if (i == data.length) {
+		  			i = 0;
+		  		}
+			  	while (counter < 5 && i < data.length) {
+			  		if (counter == 0) {
+			  			document.getElementById('matches').innerHTML = '';
+			  		}
 		  			if (data[i].color == 'red') {
 		  				document.getElementById('matches').innerHTML = document.getElementById('matches').innerHTML + '<div class="alert other-match-red"><div class="row"><div class="col-sm-2 numeral">' + data[i].number + '</div><div class="col-sm-10 date">' + data[i].time+ '</div></div></div>';
-		  			counter++;
+		  				counter++;
 			  		}
 			  		else {
 			  			document.getElementById('matches').innerHTML = document.getElementById('matches').innerHTML + '<div class="alert other-match-blue"><div class="row"><div class="col-sm-2 numeral">' + data[i].number + '</div><div class="col-sm-10 date">' + data[i].time+ '</div></div></div>';
 			  			counter++;
 			  		}
-		  		}
-		  	}
+			  		i++;
+			  	}
+			  }, 1000);
+		  	
 		  });
 		  socket.on('event', function(data){});
 		  socket.on('disconnect', function(){});
 		</script>
-		<script>setTimeout(function(){window.location.href='scores.html'},10000);</script>
+		<script>setTimeout(function(){window.location.href='scores.html'},20000);</script>
 	</head>
 	<body>
 		<h2 align="center">Upcoming Matches</h2>

@@ -64,38 +64,40 @@ function sortProperties(obj)
 }
 
 io.on('connection', function (socket) {
-	var datapath = path.join(__dirname, 'data.json');
-	var obj = JSON.parse(fs.readFileSync(datapath, 'utf8'));
-	upcoming = [];
-	for (var i = 0; i < obj.length; i++) {
-		var match = obj[i];
-		if (match.time * 1000 >= 1) {
-			teamColor = '';
-			if (match.alliances.red.teams.indexOf('frc' + team) > -1) {
-				teamColor = 'red';
-			}
-			else {
-				teamColor = 'blue';
-			}
-			upcoming.push(
-				{ 
-					number: match.match_number.toString(),
-					time: moment(match.time *1000).format('MM/DD/YYYY hh:mm a').toString(),
-					red: [match.alliances.red.teams[0].substring(3), match.alliances.red.teams[1].substring(3), match.alliances.red.teams[2].substring(3)],
-					blue: [match.alliances.blue.teams[0].substring(3), match.alliances.blue.teams[1].substring(3), match.alliances.blue.teams[2].substring(3)],
-					color: teamColor,
-					score_breakdown: match.score_breakdown
+	setInterval(function(){
+		var datapath = path.join(__dirname, 'data.json');
+		var obj = JSON.parse(fs.readFileSync(datapath, 'utf8'));
+		upcoming = [];
+		for (var i = 0; i < obj.length; i++) {
+			var match = obj[i];
+			if (new Date(match.time * 1000).getDate() == new Date(Date.now()).getDate()) {
+				teamColor = '';
+				if (match.alliances.red.teams.indexOf('frc' + team) > -1) {
+					teamColor = 'red';
 				}
-			);
+				else {
+					teamColor = 'blue';
+				}
+				upcoming.push(
+					{ 
+						number: match.match_number.toString(),
+						time: moment(match.time *1000).format('hh:mm a').toString(),
+						red: [match.alliances.red.teams[0].substring(3), match.alliances.red.teams[1].substring(3), match.alliances.red.teams[2].substring(3)],
+						blue: [match.alliances.blue.teams[0].substring(3), match.alliances.blue.teams[1].substring(3), match.alliances.blue.teams[2].substring(3)],
+						score_breakdown: match.score_breakdown,
+						color: teamColor
+					}
+				);
+			}
 		}
-	}
-	socket.emit('next', upcoming);
+		socket.emit('next', upcoming);
+	}, 10000);
 });
 
 io2.on('connection', function (socket) {
 	var result = {};
 	var options = {
-	    url: 'https://www.thebluealliance.com/api/v2/event/2015ncre/stats',
+	    url: 'https://www.thebluealliance.com/api/v2/event/2016ncash/stats',
 	    headers: {'X-TBA-App-ID': 'frc4828:insight:v1.0.0'}
 	};
 

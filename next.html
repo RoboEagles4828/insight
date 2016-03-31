@@ -6,96 +6,147 @@
 		<link href="/css/custom.css" rel="stylesheet" />
 		<script src="/socket.io/socket.io.js"></script>
 		<script>
-			var socket = io('http://localhost:3000');
-			team = '4828'
-			socket.on('connect', function(){});
-			var current;
-			socket.on('next', function(data){
-				current = data;
-				document.getElementById('match-string').innerHTML = 'Match #' + data[0].number;
-				document.getElementById('time-string').innerHTML = data[0].time;
+		  	var socket = io('http://localhost:3000');
+		  	team = '4828'
+		  	var i = 0;
+		  	var current;
+		  	socket.on('connect', function(){});
+		  	socket.on('next', function(data){
+		  		current = data;
+		  		if (current.length == 0) {
+		  			document.getElementById('root').innerHTML = '<h2 align="center">Oops!</h2><h5 align="center">It appears that there are no matches today. Check back again tomorrow!</h5>';
+		  		}
+			  	document.getElementById('match-string').innerHTML = 'Match #' + data[0].number;
+			  	document.getElementById('time-string').innerHTML = data[0].time;
 
-				if (data[0].red[0] == team) {
-					document.getElementById('red-top').innerHTML = '<div class="us">' + data[0].red[0] + '</div>';
-				}
-				else {
-					document.getElementById('red-top').innerHTML = data[0].red[0].toString();
-				}
+			  	if (data[0].red[0] == team) {
+			  		document.getElementById('red-top').innerHTML = '<div class="us">' + data[0].red[0] + '</div>';
+			  	}
+			  	else {
+			  		document.getElementById('red-top').innerHTML = data[0].red[0].toString();
+			  	}
 
-				if (data[0].red[1] == team) {
-					document.getElementById('red-mid').innerHTML = '<div class="us">' + data[0].red[1] + '</div>';
-				}
-				else {
-					document.getElementById('red-mid').innerHTML = data[0].red[1].toString();
-				}
+			  	if (data[0].red[1] == team) {
+			  		document.getElementById('red-mid').innerHTML = '<div class="us">' + data[0].red[1] + '</div>';
+			  	}
+			  	else {
+			  		document.getElementById('red-mid').innerHTML = data[0].red[1].toString();
+			  	}
 
-				if (data[0].red[2] == team) {
-					document.getElementById('red-bot').innerHTML = '<div class="us">' + data[0].red[2] + '</div>';
-				}
-				else {
-					document.getElementById('red-bot').innerHTML = data[0].red[2].toString();
-				}
+			  	if (data[0].red[2] == team) {
+			  		document.getElementById('red-bot').innerHTML = '<div class="us">' + data[0].red[2] + '</div>';
+			  	}
+			  	else {
+			  		document.getElementById('red-bot').innerHTML = data[0].red[2].toString();
+			  	}
 
-				if (data[0].blue[0] == team) {
-					document.getElementById('blue-top').innerHTML = '<div class="us">' + data[0].blue[0] + '</div>';
-				}
-				else {
-					document.getElementById('blue-top').innerHTML = data[0].blue[0].toString();
-				}
+			  	if (data[0].blue[0] == team) {
+			  		document.getElementById('blue-top').innerHTML = '<div class="us">' + data[0].blue[0] + '</div>';
+			  	}
+			  	else {
+			  		document.getElementById('blue-top').innerHTML = data[0].blue[0].toString();
+			  	}
 
-				if (data[0].blue[1] == team) {
-					document.getElementById('blue-mid').innerHTML = '<div class="us">' + data[0].blue[1] + '</div>';
-				}
-				else {
-					document.getElementById('blue-mid').innerHTML = data[0].blue[1].toString();
-				}
+			  	if (data[0].blue[1] == team) {
+			  		document.getElementById('blue-mid').innerHTML = '<div class="us">' + data[0].blue[1] + '</div>';
+			  	}
+			  	else {
+			  		document.getElementById('blue-mid').innerHTML = data[0].blue[1].toString();
+			  	}
 
-				if (data[0].blue[2] == team) {
-					document.getElementById('blue-bot').innerHTML = '<div class="us">' + data[0].blue[2] + '</div>';
-				}
-				else {
-					document.getElementById('blue-bot').innerHTML = data[0].blue[2].toString();
-				}
+			  	if (data[0].blue[2] == team) {
+			  		document.getElementById('blue-bot').innerHTML = '<div class="us">' + data[0].blue[2] + '</div>';
+			  	}
+			  	else {
+			  		document.getElementById('blue-bot').innerHTML = data[0].blue[2].toString();
+			  	}
 			});
-			socket.on('event', function(data){});
-			socket.on('disconnect', function(){});
-			
-			var i = 0;
-			setInterval(function() {
-				console.log(current);
-				var counter = 0;
-				if (i == current.length) {
-					i = 0;
-				}
-				while (i < current.length && counter < 5) {
-					if (counter % 5 == 0) {
-						counter = 0;
-						document.getElementById('matches').innerHTML =
-						'<div class="row">' +
-							'<div class="col-sm-5 numeral">' +
-								'Match Number' +
-							'</div>' +
-							'<div class="col-sm-5 numeral">' +
-								'Match Time' +
-							'</div>' +
-						'</div>';
-					}
-					if (current[i].color == 'red') {
-						document.getElementById('matches').innerHTML = document.getElementById('matches').innerHTML + '<div class="alert other-match-red"><div class="row"><div class="col-sm-2 numeral">' + current[i].number + '</div><div class="col-sm-10 date">' + current[i].time+ '</div></div></div>';
-						counter++;
-					}
-					else {
-						document.getElementById('matches').innerHTML = document.getElementById('matches').innerHTML + '<div class="alert other-match-blue"><div class="row"><div class="col-sm-2 numeral">' + current[i].number + '</div><div class="col-sm-10 date">' + current[i].time+ '</div></div></div>';
-						counter++;
-					}
-					i++;
-				}
+
+		    setInterval(function(){
+		  		var counter = 0;
+		  		console.log(current);
+		  		if (i == current.length) {
+		  			i = 0;
+		  		}
+			  	while (counter < 5 && i < current.length) {
+			  		var output = 0;
+			  		if (counter == 0) {
+			  			output = 
+			  			'<div class="row">' +
+			  				'<div class="col-sm-2 date">' +
+			  					'Match Number' +
+			  				'</div>' +
+			  				'<div class="col-sm-6 date">' +
+			  					'Match Time' +
+			  				'</div>' +
+			  				'<div class="col-sm-2 date">' +
+			  					'Red Score' +
+			  				'</div>' +
+			  				'<div class="col-sm-2 date">' +
+			  					'Blue Score' +
+			  				'</div>' +
+			  			'</div>';
+			  			document.getElementById('matches').innerHTML = output;
+			  			output = '';
+			  		}
+		  			if (current[i].color == 'red') {
+		  				output += 
+		  				'<div class="alert other-match-red">' +
+	  					'<div class="row">' +
+	  					'<div class="col-sm-2 numeral">' +
+	  						current[i].number + 
+	  					'</div>' +
+	  					'<div class="col-sm-6 date">' +
+	  						current[i].time +
+	  					'</div>';
+
+		  				if (current[i].score_breakdown != null) {
+		  					output += 
+		  					'<div class="col-sm-2 numeral">' +
+	  							(current[i].score_breakdown.red.totalPoints + current[i].score_breakdown.red.adjustPoints) +
+		  					'</div>' +
+		  					'<div class="col-sm-2 numeral">' +
+		  						(current[i].score_breakdown.blue.totalPoints + current[i].score_breakdown.blue.adjustPoints) +
+		  					'</div>';
+	  					}
+		  				output += '</div></div></div>';
+		  				document.getElementById('matches').innerHTML += output;
+		  				counter++;
+			  		}
+			  		else {
+			  			output +=
+			  			 '<div class="alert other-match-blue">' +
+			  			 	'<div class="row">' +
+				  			 	'<div class="col-sm-2 numeral">' +
+				  			 		current[i].number +
+				  			 	'</div>' +
+				  			 	'<div class="col-sm-6 date">' +
+				  			 		current[i].time +
+				  			 	'</div>';
+			  			
+			  			if (current[i].score_breakdown != null) {
+		  					output += 
+		  					'<div class="col-sm-2 numeral">' +
+	  							(current[i].score_breakdown.red.totalPoints + current[i].score_breakdown.red.adjustPoints) +
+		  					'</div>' +
+		  					'<div class="col-sm-2 numeral">' +
+		  						(current[i].score_breakdown.blue.totalPoints + current[i].score_breakdown.blue.adjustPoints) +
+		  					'</div>';
+	  					}
+			  			output += '</div></div></div>';
+			  			document.getElementById('matches').innerHTML += output;
+			  			counter++;
+			  		}
+			  		i++;
+			  	}
 			}, 10000);
-			
+
+		  socket.on('event', function(data){});
+		  socket.on('disconnect', function(){});
 		</script>
 	</head>
 	<body>
-		<div class="container">
+		<div class="container" id="root">
 			<h2 align="center">Next Match</h2>
 			<h5 align="center" id="match-string"></h5>
 			<h5 align="center" id="time-string"></h5>
