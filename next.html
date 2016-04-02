@@ -31,49 +31,49 @@
 		  			document.getElementById('upcoming').innerHTML = '<h5 align="center">All the matches for today have already passed. Check back again tomorrow!</h5>'
 		  		} 
 		  		else {
-				  	document.getElementById('match-string').innerHTML = 'Match #' + data[0].number;
-				  	document.getElementById('time-string').innerHTML = data[0].time;
+				  	document.getElementById('match-string').innerHTML = 'Match #' + data[startpoint].number;
+				  	document.getElementById('time-string').innerHTML = data[startpoint].time;
 
-				  	if (data[0].red[0] == team) {
-				  		document.getElementById('red-top').innerHTML = '<div class="us">' + data[0].red[0] + '</div>';
+				  	if (data[startpoint].red[0] == team) {
+				  		document.getElementById('red-top').innerHTML = '<div class="us">' + data[startpoint].red[0] + '</div>';
 				  	}
 				  	else {
-				  		document.getElementById('red-top').innerHTML = data[0].red[0].toString();
+				  		document.getElementById('red-top').innerHTML = data[startpoint].red[0].toString();
 				  	}
 
-				  	if (data[0].red[1] == team) {
-				  		document.getElementById('red-mid').innerHTML = '<div class="us">' + data[0].red[1] + '</div>';
+				  	if (data[startpoint].red[1] == team) {
+				  		document.getElementById('red-mid').innerHTML = '<div class="us">' + data[startpoint].red[1] + '</div>';
 				  	}
 				  	else {
-				  		document.getElementById('red-mid').innerHTML = data[0].red[1].toString();
+				  		document.getElementById('red-mid').innerHTML = data[startpoint].red[1].toString();
 				  	}
 
-				  	if (data[0].red[2] == team) {
-				  		document.getElementById('red-bot').innerHTML = '<div class="us">' + data[0].red[2] + '</div>';
+				  	if (data[startpoint].red[2] == team) {
+				  		document.getElementById('red-bot').innerHTML = '<div class="us">' + data[startpoint].red[2] + '</div>';
 				  	}
 				  	else {
-				  		document.getElementById('red-bot').innerHTML = data[0].red[2].toString();
+				  		document.getElementById('red-bot').innerHTML = data[startpoint].red[2].toString();
 				  	}
 
-				  	if (data[0].blue[0] == team) {
-				  		document.getElementById('blue-top').innerHTML = '<div class="us">' + data[0].blue[0] + '</div>';
+				  	if (data[startpoint].blue[0] == team) {
+				  		document.getElementById('blue-top').innerHTML = '<div class="us">' + data[startpoint].blue[0] + '</div>';
 				  	}
 				  	else {
-				  		document.getElementById('blue-top').innerHTML = data[0].blue[0].toString();
+				  		document.getElementById('blue-top').innerHTML = data[startpoint].blue[0].toString();
 				  	}
 
-				  	if (data[0].blue[1] == team) {
-				  		document.getElementById('blue-mid').innerHTML = '<div class="us">' + data[0].blue[1] + '</div>';
+				  	if (data[startpoint].blue[1] == team) {
+				  		document.getElementById('blue-mid').innerHTML = '<div class="us">' + data[startpoint].blue[1] + '</div>';
 				  	}
 				  	else {
-				  		document.getElementById('blue-mid').innerHTML = data[0].blue[1].toString();
+				  		document.getElementById('blue-mid').innerHTML = data[startpoint].blue[1].toString();
 				  	}
 
-				  	if (data[0].blue[2] == team) {
-				  		document.getElementById('blue-bot').innerHTML = '<div class="us">' + data[0].blue[2] + '</div>';
+				  	if (data[startpoint].blue[2] == team) {
+				  		document.getElementById('blue-bot').innerHTML = '<div class="us">' + data[startpoint].blue[2] + '</div>';
 				  	}
 				  	else {
-				  		document.getElementById('blue-bot').innerHTML = data[0].blue[2].toString();
+				  		document.getElementById('blue-bot').innerHTML = data[startpoint].blue[2].toString();
 				  	}
 				}
 			});
