@@ -24,11 +24,11 @@ app.use(express.static('fonts'));
 var server = http.createServer(app);
 
 app.get('/css/bootstrap.min.css', function(req, res) {
-	res.sendFile(__dirname + '/bower_components/flat-ui/dist/css/vendor/bootstrap.min.css');
+	res.sendFile(__dirname + '/node_modules/flat-ui/bootstrap/css/bootstrap.css');
 });
 
 app.get('/css/flat-ui.min.css', function(req, res) {
-	res.sendFile(__dirname + '/bower_components/flat-ui/dist/css/flat-ui.min.css');
+	res.sendFile(__dirname + '/node_modules/flat-ui/css/flat-ui.css');
 });
 
 app.get('/css/custom.css', function(req, res) {
