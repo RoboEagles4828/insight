@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Upcoming</title>
+		<title>Upcoming Matches View</title>
 		<link href="/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="/css/flat-ui.min.css" rel="stylesheet" />
 		<link href="/css/custom.css" rel="stylesheet" />
@@ -8,41 +8,45 @@
 		<script>
 		  var socket = io('http://localhost:3000');
 		  team = '4828'
+		  datastore = [];
+		  counter = 0;
+		  i = 0;
 		  socket.on('connect', function(){});
 		  socket.on('next', function(data){
-		  	console.log(data);
-		  	var i = 0;
-		  	setInterval(function(){
-		  		var counter = 0;
-		  		if (i == data.length) {
-		  			i = 0;
-		  		}
-			  	while (counter < 5 && i < data.length) {
-			  		if (counter == 0) {
-			  			document.getElementById('matches').innerHTML = '';
-			  		}
-		  			if (data[i].color == 'red') {
-		  				document.getElementById('matches').innerHTML = document.getElementById('matches').innerHTML + '<div class="alert other-match-red"><div class="row"><div class="col-sm-2 numeral">' + data[i].number + '</div><div class="col-sm-10 date">' + data[i].time+ '</div></div></div>';
-		  				counter++;
-			  		}
-			  		else {
-			  			document.getElementById('matches').innerHTML = document.getElementById('matches').innerHTML + '<div class="alert other-match-blue"><div class="row"><div class="col-sm-2 numeral">' + data[i].number + '</div><div class="col-sm-10 date">' + data[i].time+ '</div></div></div>';
-			  			counter++;
-			  		}
-			  		i++;
-			  	}
-			  }, 1000);
-		  	
+		  	if (datastore != data) {
+		  	  	datastore = data;
+		  	}
 		  });
 		  socket.on('event', function(data){});
 		  socket.on('disconnect', function(){});
+		  setInterval(refreshEntries, 5000);
+		  function refreshEntries() {
+		  	console.log("We ran!");
+			while (counter < 5 && i < datastore.length) {
+			  		if (counter % 5 == 0) {
+			  			document.getElementById('matches').innerHTML = '';
+			  		}
+		  			if (datastore[i].color == 'red') {
+		  				document.getElementById('matches').innerHTML = document.getElementById('matches').innerHTML + '<div class="alert other-match-red"><div class="row"><div class="col-sm-2 numeral">' + datastore[i].number + '</div><div class="col-sm-10 date">' + datastore[i].time+ '</div></div></div>';
+		  				counter++;
+			  		}
+			  		else {
+			  			document.getElementById('matches').innerHTML = document.getElementById('matches').innerHTML + '<div class="alert other-match-blue"><div class="row"><div class="col-sm-2 numeral">' + datastore[i].number + '</div><div class="col-sm-10 date">' + datastore[i].time+ '</div></div></div>';
+			  			counter++;
+			  		}
+			  		i++;
+			}
+			counter = 0;
+			if (i == datastore.length) {
+		  		i = 0;
+		  	}
+		  }
 		</script>
-		<script>setTimeout(function(){window.location.href='scores.html'},20000);</script>
 	</head>
 	<body>
 		<h2 align="center">Upcoming Matches</h2>
 		<div class="container">
-			<div id="matches"></div>
+			<div id="matches"><center><p><i>Please wait while the match information is populated...</i></p></center></div>
 		</div>
 	</body>
 </html>

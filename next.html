@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Test</title>
+		<title>Combined Next Match View</title>
 		<link href="/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="/css/flat-ui.min.css" rel="stylesheet" />
 		<link href="/css/custom.css" rel="stylesheet" />
@@ -14,7 +14,7 @@
 		  	socket.on('next', function(data){
 		  		current = data;
 		  		if (current.length == 0) {
-		  			document.getElementById('root').innerHTML = '<h2 align="center">Oops!</h2><h5 align="center">It appears that there are no matches today. Check back again tomorrow!</h5>';
+		  			document.getElementById('root').innerHTML = '<h2 align="center">Oops!</h2><h5 align="center">There are no matches today. Check back again tomorrow!</h5>';
 		  		}
 		  		var startpoint = -1;
 		  		var i = 0;
@@ -29,7 +29,7 @@
 		  		}
 		  		if (startpoint == -1 && uptodate == false) {
 		  			document.getElementById('upcoming').innerHTML = '<h5 align="center">All the matches for today have already passed. Check back again tomorrow!</h5>'
-		  		} 
+		  		}
 		  		else {
 				  	document.getElementById('match-string').innerHTML = 'Match #' + data[startpoint].number;
 				  	document.getElementById('time-string').innerHTML = data[startpoint].time;
@@ -80,14 +80,13 @@
 
 		    setInterval(function(){
 		  		var counter = 0;
-		  		console.log(current);
 		  		if (i == current.length) {
 		  			i = 0;
 		  		}
 			  	while (counter < 5 && i < current.length) {
 			  		var output = '';
 			  		if (counter == 0) {
-			  			output = 
+			  			output =
 			  			'<div class="row">' +
 			  				'<div class="col-sm-2 date">' +
 			  					'Match Number' +
@@ -106,18 +105,18 @@
 			  			output = '';
 			  		}
 		  			if (current[i].color == 'red') {
-		  				output += 
+		  				output +=
 		  				'<div class="alert other-match-red">' +
 	  					'<div class="row">' +
 	  					'<div class="col-sm-2 numeral">' +
-	  						current[i].number + 
+	  						current[i].number +
 	  					'</div>' +
 	  					'<div class="col-sm-6 date">' +
 	  						current[i].time +
 	  					'</div>';
 
 		  				if (current[i].score_breakdown != null) {
-		  					output += 
+		  					output +=
 		  					'<div class="col-sm-2 numeral">' +
 	  							(current[i].score_breakdown.red.totalPoints + current[i].score_breakdown.red.adjustPoints) +
 		  					'</div>' +
@@ -139,9 +138,9 @@
 				  			 	'<div class="col-sm-6 date">' +
 				  			 		current[i].time +
 				  			 	'</div>';
-			  			
+
 			  			if (current[i].score_breakdown != null) {
-		  					output += 
+		  					output +=
 		  					'<div class="col-sm-2 numeral">' +
 	  							(current[i].score_breakdown.red.totalPoints + current[i].score_breakdown.red.adjustPoints) +
 		  					'</div>' +
@@ -184,7 +183,7 @@
 				</div>
 			</div>
 			<hr />
-			<div id="matches"></div>
+			<div id="matches"><center><p><i>Please wait while the match data is being populated.</i></p></center></div>
 		</div>
 	</body>
 </html>

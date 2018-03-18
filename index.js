@@ -79,7 +79,7 @@ io.on('connection', function (socket) {
 					teamColor = 'blue';
 				}
 				upcoming.push(
-					{ 
+					{
 						number: match.match_number.toString(),
 						time: moment(match.time *1000).format('hh:mm a').toString(),
 						timestamp: match.time,
@@ -92,7 +92,7 @@ io.on('connection', function (socket) {
 			}
 		}
 		socket.emit('next', upcoming);
-	}, 10000);
+	}, 100);
 });
 
 io2.on('connection', function (socket) {
