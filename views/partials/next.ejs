@@ -1,0 +1,24 @@
+<h2 style="text-align: center;">Next Match</h2>
+<% if (data.length == 0) { %></>
+<a class="list-group-item list-group-item-action list-group-item-warning">There is no data available.</a>
+<% } else if (startpoint == -1 && uptodate == false) { %>
+<a class="list-group-item list-group-item-action list-group-item-warning">There are no remaining matches today.</a>
+<% } else { %>
+<h5 align="center" id="match-string">Match #<%= data[startpoint].number %></h5>
+<h5 align="center" id="time-string"><%= data[startpoint].time %></h5>
+<div class="row flexrow">
+    <div class="col-md-5 alert alert-danger alliance-red frc<%= data[startpoint].red[0] %>" id="red-top"><%= data[startpoint].red[0] %></div>
+    <div class="col-md-2"></div>
+    <div class="col-md-5 alert alert-primary alliance-blue frc<%= data[startpoint].blue[0] %>" id="blue-top"><%= data[startpoint].blue[0] %></div>
+</div>
+<div class="row flexrow">
+    <div class="col-md-5 alert alert-danger alliance-red frc<%= data[startpoint].red[1] %>" id="red-mid"><%= data[startpoint].red[1] %></div>
+    <div class="col-md-2"></div>
+    <div class="col-md-5 alert alert-primary alliance-blue frc<%= data[startpoint].blue[1] %>" id="blue-mid"><%= data[startpoint].blue[1] %></div>
+</div>
+<div class="row flexrow">
+    <div class="col-md-5 alert alert-danger alliance-red frc<%= data[startpoint].red[2] %>" id="red-bot"><%= data[startpoint].red[2] %></div>
+    <div class="col-md-2"></div>
+    <div class="col-md-5 alert alert-primary alliance-blue frc<%= data[startpoint].blue[2] %>" id="blue-bot"><%= data[startpoint].blue[2] %></div>
+</div>
+<% } %>

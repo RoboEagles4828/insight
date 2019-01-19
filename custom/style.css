@@ -4,32 +4,22 @@
 }
 
 .alliance-red {
-	color: #fff;
-	background-color: #e74c3c;
-    border-color: #c0392b;
     text-align: center;
     font-size: 200%;
 }
 
 .alliance-blue {
-	color: #fff;
-	background-color: #3498db;
-    border-color: #2980b9;
     text-align: center;
     font-size: 200%;
 }
 
 .date {
     display: table-cell;
-    font-size: 125%;
-    line-height: 70px;
     vertical-align: middle;
 }
 
 .numeral {
     display: table-cell;
-    font-size: 150%;
-    line-height: 70px;
     vertical-align: middle;
 }
 
@@ -65,11 +55,34 @@
     padding: 0px;
 }
 
-.us {
+.frc4828 {
     text-decoration: underline;
 }
 
 .vs {
 	text-align: center;
 	font-size: 300%;
+}
+
+.no-overflow {
+    padding-bottom: 0px !important;
+    padding-right: 0px !important;
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+}
+
+body {
+    display: flex;
+}
+
+html, body {
+    height: 100%;
+}
+
+footer {
+    margin-top: auto;
+}
+
+a.no-color {
+    color: inherit;
 }

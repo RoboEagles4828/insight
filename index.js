@@ -8,27 +8,43 @@ var stipes  = require('stipes');
 require('pretty-error').start();
 stipes.success('init', 'logging library loaded');
 
+team = 4828;
 var app = express();
-var server = app.listen(3000);
-var scores = app.listen(3001);
-var io = require('socket.io').listen(server);
-stipes.success('init', 'bound successfully to port 3000');
-var io2 = require('socket.io').listen(scores);
-stipes.success('init', 'bound successfully to port 3001');
-team = '4828';
 stipes.debug('insight', 'running on behalf of team ' + team);
 
 app.set('views', __dirname + '/views');
 app.use(express.static('fonts'));
+app.set('view engine', 'ejs');
 
 var server = http.createServer(app);
 
-app.get('/css/bootstrap.min.css', function(req, res) {
-	res.sendFile(__dirname + '/node_modules/flat-ui/bootstrap/css/bootstrap.css');
+app.get('/', function(req, res) {
+	var startpoint = -1;
+	var i = 0;
+	var uptodate = false;
+	data = formatMatches();
+	while (i < data.length && uptodate == false) {
+		if (data[i].timestamp * 1000 >= Date.now()) {
+			uptodate = true;
+			startpoint = i;
+		} else {
+			i++;
+		}
+	}
+	res.render(__dirname + '/views/pages/combo.ejs',
+		{
+			data: formatMatches(),
+			startpoint: startpoint,
+			uptodate: uptodate,
+			event: getEventInfo(),
+			version: process.env.npm_package_version,
+			node: process.version
+		}
+	);
 });
 
-app.get('/css/flat-ui.min.css', function(req, res) {
-	res.sendFile(__dirname + '/node_modules/flat-ui/css/flat-ui.css');
+app.get('/css/bootstrap.min.css', function(req, res) {
+	res.sendFile(__dirname + '/node_modules/bootstrap/dist/css/bootstrap.min.css');
 });
 
 app.get('/css/custom.css', function(req, res) {
@@ -40,7 +56,7 @@ app.get('/next.html', function(req, res) {
 });
 
 app.get('/upcoming.html', function(req, res) {
-	res.sendFile(__dirname + '/upcoming.html');
+	res.render(__dirname + '/views/pages/upcoming.ejs', {data: formatMatches()});
 });
 
 app.get('/scores.html', function(req, res) {
@@ -63,61 +79,41 @@ function sortProperties(obj)
     return sortable; // array in format [ [ key1, val1 ], [ key2, val2 ], ... ]
 }
 
-io.on('connection', function (socket) {
-	setInterval(function(){
-		var datapath = path.join(__dirname, 'data.json');
-		var obj = JSON.parse(fs.readFileSync(datapath, 'utf8'));
-		upcoming = [];
-		for (var i = 0; i < obj.length; i++) {
-			var match = obj[i];
-			if (new Date(match.time * 1000).getDate() == new Date(Date.now()).getDate()) {
-				teamColor = '';
-				if (match.alliances.red.teams.indexOf('frc' + team) > -1) {
-					teamColor = 'red';
-				}
-				else {
-					teamColor = 'blue';
-				}
-				upcoming.push(
-					{
-						number: match.match_number.toString(),
-						time: moment(match.time *1000).format('hh:mm a').toString(),
-						timestamp: match.time,
-						red: [match.alliances.red.teams[0].substring(3), match.alliances.red.teams[1].substring(3), match.alliances.red.teams[2].substring(3)],
-						blue: [match.alliances.blue.teams[0].substring(3), match.alliances.blue.teams[1].substring(3), match.alliances.blue.teams[2].substring(3)],
-						score_breakdown: match.score_breakdown,
-						color: teamColor
-					}
-				);
+function getEventInfo()
+{
+	var data = JSON.parse(fs.readFileSync(path.join(__dirname, 'data.json'), 'utf8'));
+	return {name: data.name, key: data.key};
+}
+
+function formatMatches()
+{
+	var datapath = path.join(__dirname, 'data.json');
+	var obj = JSON.parse(fs.readFileSync(datapath, 'utf8')).matches;
+	upcoming = [];
+	for (var i = 0; i < obj.length; i++) {
+		var match = obj[i];
+		if (new Date(match.time * 1000).getDate() == new Date(Date.now()).getDate()) {
+			teamColor = '';
+			if (match.alliances.red.teams.indexOf('frc' + team) > -1) {
+				teamColor = 'red';
 			}
-		}
-		socket.emit('next', upcoming);
-	}, 100);
-});
-
-io2.on('connection', function (socket) {
-	var result = {};
-	var options = {
-	    url: 'https://www.thebluealliance.com/api/v2/event/2016ncash/stats',
-	    headers: {'X-TBA-App-ID': 'frc4828:insight:v1.0.0'}
-	};
-
-	function callback(error, response, body) {
-		try {
-	    	result = JSON.parse(body);
-		    var oprs = sortProperties(result.oprs).reverse();
-		    var dprs = sortProperties(result.dprs).reverse();
-		    var ccwms = sortProperties(result.ccwms).reverse();
-		    socket.emit("scores",
-		    	{
-		    		"oprs": oprs,
-		    		"dprs": dprs,
-		    		"ccwms": ccwms
-		    	}
-	    	);
-		} catch (e) {
-			stipes.error('insight', "failed to update score");
+			else {
+				teamColor = 'blue';
+			}
+			upcoming.push(
+				{
+					number: match.match_number.toString(),
+					time: moment(match.time *1000).format('hh:mm a').toString(),
+					timestamp: match.time,
+					red: [match.alliances.red.teams[0].substring(3), match.alliances.red.teams[1].substring(3), match.alliances.red.teams[2].substring(3)],
+					blue: [match.alliances.blue.teams[0].substring(3), match.alliances.blue.teams[1].substring(3), match.alliances.blue.teams[2].substring(3)],
+					score_breakdown: match.score_breakdown,
+					color: teamColor
+				}
+			);
 		}
 	}
-	request(options, callback);
-});
+	return upcoming;
+}
+
+app.listen(3000);

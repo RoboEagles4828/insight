@@ -1,0 +1,13 @@
+<h2 style="text-align: center;">Upcoming Matches</h2>
+<ul class="list-group">
+    <% if (data.length == 0) { %>
+        <li class="list-group-item list-group-item-warning py-2">No data is available. Please check back later.</a>
+    <% } %>
+    <% for(var i=0; i < data.length; i++) { %>
+        <% if (data[i].color == 'red') { %>
+            <li class="list-group-item list-group-item-danger py-2"><strong><a href="https://www.thebluealliance.com/match/<%= data[i].key %>" class="no-color">Match <%= data[i].number %></a>:</strong> <%= data[i].time %></h6></li>
+        <% } else { %>
+            <li class="list-group-item list-group-item-primary py-2"><strong><a href="https://www.thebluealliance.com/match/<%= data[i].key %>" class="no-color">Match <%= data[i].number %></a>:</strong> <%= data[i].time %></h6></li>
+        <% } %>
+    <% } %>
+</ul>
